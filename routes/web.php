@@ -1,5 +1,7 @@
 <?php
 
+use App\User;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,7 +17,7 @@ Auth::routes();
 
 //Index page
 Route::get('/', function () {
-    return view('welcome');
+	return view('welcome');
 });
 
 //Task routes

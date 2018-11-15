@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Task;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
@@ -14,7 +16,11 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = Task::orderBy('created_at', 'updated_at', 'DESC')->paginate(10);
+        $tasks = User::find(Auth::user()->id) //Get current user
+        ->tasks() //Get his/her tasks
+        ->orderBy('created_at', 'updated_at', 'DESC') //Order By
+        ->paginate(14); //14 items per page
+
         return view('tasks.index', compact('tasks'));
     }
 
@@ -40,9 +46,13 @@ class TaskController extends Controller
         $rules = [ 
             'title' => 'required|min:5'
         ];
-
+        
         $this->validate($request, $rules);
-        $task = Task::create($request->all());
+
+        $task = new Task();
+        $task->title   = $request->input('title');
+        $task->user_id = Auth::user()->id;
+        $task->save();
 
         return redirect()->route('tasks.index');
     }
@@ -86,8 +96,10 @@ class TaskController extends Controller
         ];
 
         $this->validate($request, $rules);
-        
-        $task->fill($request->only(['title',]));
+
+        $task = new Task();
+        $task->title   = $request->input('title');
+        $task->user_id = Auth::user()->id;
         $task->save();
 
         return redirect()->route('tasks.index');

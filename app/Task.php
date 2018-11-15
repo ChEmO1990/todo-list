@@ -2,10 +2,13 @@
 
 namespace App;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Task extends Model
 {
+    protected $table = 'tasks';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -23,4 +26,8 @@ class Task extends Model
     protected $hidden = [
     	'password', 'remember_token',
     ];
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
 }
