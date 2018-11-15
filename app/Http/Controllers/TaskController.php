@@ -14,7 +14,8 @@ class TaskController extends Controller
      */
     public function index()
     {
-        //
+        $tasks = Task::orderBy('created_at', 'updated_at', 'DESC')->paginate(10);
+        return view('tasks.index', compact('tasks'));
     }
 
     /**
@@ -24,7 +25,7 @@ class TaskController extends Controller
      */
     public function create()
     {
-        //
+        return view('tasks.create');
     }
 
     /**
@@ -35,7 +36,15 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //Validation's rules
+        $rules = [ 
+            'title' => 'required|min:5'
+        ];
+
+        $this->validate($request, $rules);
+        $task = Task::create($request->all());
+
+        return redirect()->route('tasks.index');
     }
 
     /**
@@ -46,7 +55,8 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        //
+        $task = Task::findOrFail($task);
+        return view('tasks.show', compact('task'));
     }
 
     /**
@@ -57,7 +67,8 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
-        //
+        $task = Task::findOrFail($task->id);
+        return view('tasks.edit', compact('task'));
     }
 
     /**
@@ -69,7 +80,17 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task)
     {
-        //
+        //Validation's rules
+        $rules = [ 
+            'title' => 'required|min:5'
+        ];
+
+        $this->validate($request, $rules);
+        
+        $task->fill($request->only(['title',]));
+        $task->save();
+
+        return redirect()->route('tasks.index');
     }
 
     /**
@@ -80,6 +101,7 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        //
+        $task->delete();
+        return redirect()->route('tasks.index');
     }
 }
