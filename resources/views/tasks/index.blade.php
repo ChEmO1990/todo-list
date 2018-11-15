@@ -24,13 +24,10 @@
             <td>{{ $task->title }}</td>
             <td>{{ $task->created_at->format('F d, Y h:ia') }}</td>
             <td>
-
-              {!! Form::model($task, ['method' => 'DELETE', 'route' => ['tasks.destroy', $task->id], 'class' =>'pull-left form-delete']) !!}
-              {!! Form::hidden('id', $task->id) !!}
-              {!! Form::button('<i class="fa fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs'] )  !!}
-              {!! Form::close() !!}
-              
+              {{ Form::open(['method'  => 'DELETE', 'route' => ['tasks.destroy', $task->id]]) }}
+              <button class="btn btn-danger" type="submit">Delete</button>
               <a href="{{ route('tasks.edit', $task->id) }}" class="btn btn-primary">Edit</a>
+              {!! Form::close() !!}
             </td>
           </tr>
           @endforeach
