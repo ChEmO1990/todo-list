@@ -24,7 +24,7 @@ class TaskController extends Controller
         $tasks = User::find(Auth::user()->id) //Get current user
         ->tasks() //Get his/her tasks
         ->orderBy('created_at', 'updated_at', 'DESC') //Order By
-        ->paginate(14); //14 items per page
+        ->paginate(10); //14 items per page
 
         return view('tasks.index', compact('tasks'));
     }
