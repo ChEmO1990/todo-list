@@ -5,7 +5,7 @@
 	<div class="row justify-content-center">
 		<div class="col-md-12">
 			{!! Form::open(['action' => ['TaskController@update', $task->id], 'method'=>'POST']) !!}
-			<h1>New Task</h1>
+			<h1>Edit Task</h1>
 			@if ($errors->any())
 			<div class="alert alert-danger">
 				<ul>
